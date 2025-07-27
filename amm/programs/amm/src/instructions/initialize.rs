@@ -1,3 +1,5 @@
+#![allow(unexpected_cfgs)]
+#![allow(deprecated)]
 use anchor_lang::prelude::*;
 use anchor_spl::{associated_token::AssociatedToken , token_interface::{TokenAccount, TokenInterface , Mint}};
 

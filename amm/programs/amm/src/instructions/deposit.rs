@@ -3,7 +3,7 @@
 use anchor_lang::prelude::*;
 use anchor_spl::{associated_token::AssociatedToken, token_interface::{transfer, Mint, TokenAccount, TokenInterface, Transfer , MintTo , mint_to}};
 use constant_product_curve::ConstantProduct;
-use crate::{amm, error::AmmError, state::Config};
+use crate::{error::AmmError, state::Config};
 #[derive(Accounts)]
 pub struct Deposit <'info> { 
     #[account(mut)]
@@ -85,7 +85,7 @@ impl<'info> Deposit <'info> {
         self.deposit_tokens(true, x)?;
         self.deposit_tokens(false, y)?;
         self.mint_lp_tokens(amount)
-
+        
     }
 
     pub fn deposit_tokens(&self , is_x:bool , amount : u64) ->Result<()> {
