@@ -34,7 +34,7 @@ pub struct Deposit <'info> {
     #[account(
         has_one = mint_x,
         has_one = mint_y,
-        seeds = [b"config" , config.seed.to_be_bytes().as_ref()],
+        seeds = [b"config" , config.seed.to_le_bytes().as_ref()],
         bump = config.config_bump
     )]
     pub config : Account<'info , Config>,
@@ -48,7 +48,7 @@ pub struct Deposit <'info> {
 
     #[account(
         mut,
-        associated_token::mint = mint_x,
+        associated_token::mint = mint_y,
         associated_token::authority = config
     )]
     pub vault_y : InterfaceAccount<'info , TokenAccount >,
@@ -114,10 +114,9 @@ impl<'info> Deposit <'info> {
             authority: self.config.to_account_info()
         };
 
-        let seeds = &[&b"config"[..], &self.config.seed.to_be_bytes(), &[self.config.config_bump]];
-        let signer_seeds = &[&seeds[..]];
-
-        let cpi_ctx = CpiContext::new_with_signer(cpi_program, cpi_accounts, signer_seeds);
+        let seeds: &[&[&[u8]]] = &[&[&b"config"[..], &self.config.seed.to_le_bytes(), &[self.config.config_bump]]];
+        // let signer_seeds = &[&seeds[..]];
+        let cpi_ctx = CpiContext::new_with_signer(cpi_program, cpi_accounts, seeds);
         mint_to(cpi_ctx, amount)
     } 
 }
