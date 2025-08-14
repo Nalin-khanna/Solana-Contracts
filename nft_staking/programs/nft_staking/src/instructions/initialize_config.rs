@@ -1,11 +1,8 @@
 use anchor_lang::prelude::*;
-use anchor_spl::token::Mint;
+use anchor_spl::token::{Mint , Token};
 use crate::state_config::StateConfig;
-//  pub points_per_stake: u8,
-//     pub max_stake: u8,
-//     pub freeze_period: u32,
-//     pub rewards_period: u32,
-//     pub bump: u8,
+
+
 #[derive(Accounts)]
 pub struct InitializeConfig<'info> {
     #[account(mut)]
@@ -30,8 +27,20 @@ pub struct InitializeConfig<'info> {
     )]
     pub rewards_mint : Account<'info, Mint>,
     pub system_program: Program<'info, System>,
+    pub token_program: Program<'info, Token>,
 }
-
+impl<'info> InitializeConfig<'info> {
+    pub fn initialize_config(&mut self,  points_per_stake:u8 , max_stake : u8 , rewards_period: u32 , freeze_period:u32, bumps : &InitializeConfigBumps ) -> Result<()> {
+        self.config.set_inner(StateConfig { 
+            points_per_stake, 
+            max_stake,
+            freeze_period,
+            rewards_period,
+            bump: bumps.config 
+        });
+        Ok(())
+    }
+}
 pub fn handler(ctx: Context<InitializeConfig>) -> Result<()> {
     msg!("Greetings from: {:?}", ctx.program_id);
     Ok(())
