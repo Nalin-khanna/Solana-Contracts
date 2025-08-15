@@ -6,3 +6,5 @@ pub mod reviewer_init;
 pub use reviewer_init::*;
 pub mod submit_vote;
 pub use submit_vote::*;
+pub mod finalize;
+pub use finalize::*;

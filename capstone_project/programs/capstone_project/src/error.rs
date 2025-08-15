@@ -12,4 +12,12 @@ pub enum ErrorCode {
     NoStake,
     #[msg("Already voted on this contribution")]
     AlreadyVoted,
+    #[msg("Task already finalized")]
+    TaskAlreadyFinalized,
+    #[msg("Contribution already finalized")]
+    ContributionAlreadyFinalized,
+    #[msg("No votes cast")]
+    NoVotesCast,
+    #[msg("Unauthorized action")]
+    Unauthorized,
 }

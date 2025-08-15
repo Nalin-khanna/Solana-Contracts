@@ -27,7 +27,7 @@ pub struct ReviewerInit<'info> {
     pub system_program: Program<'info, System>,
 }
 impl <'info> ReviewerInit<'info> {
-    pub fn initialize_reviewer(&mut self, staked_amount: u64, bumps: &ReviewerInitBumps) -> Result<()> {
+    pub fn reviewer_init(&mut self, staked_amount: u64, bumps: &ReviewerInitBumps) -> Result<()> {
         self.review_account.set_inner(ReviewAccount {
             staked_amount,
             active: true,

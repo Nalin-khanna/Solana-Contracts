@@ -38,7 +38,7 @@ pub struct SubmitVote<'info> {
     pub system_program: Program<'info, System>,
 }
 impl<'info> SubmitVote<'info> {
-    pub fn vote_on_contribution(
+    pub fn submit_vote(
         &mut self,
         approve: bool, // true = approve, false = reject
     ) -> Result<()> {

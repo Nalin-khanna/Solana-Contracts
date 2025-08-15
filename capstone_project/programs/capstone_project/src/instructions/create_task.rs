@@ -10,9 +10,11 @@ pub struct CreateTask<'info> {
     pub creator: Signer<'info>,
     
     #[account(
-        mut,
+        init,
+        payer = creator,
         seeds = [b"task", creator.key().as_ref(), task_seed.to_le_bytes().as_ref()],
         bump,
+        space = 8 + TaskAccount::INIT_SPACE
     )]
     pub task_account: Account<'info, TaskAccount>,
 
