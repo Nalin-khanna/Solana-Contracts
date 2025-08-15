@@ -1,8 +1,6 @@
 use anchor_lang::prelude::*;
 use crate::{state::*};
-use anchor_lang::system_program::{transfer };
-use anchor_lang::system_program::{Transfer};
-
+use crate::error::ErrorCode::InvalidWorkUnits;
 #[derive(Accounts)]
 pub struct SubmitContribution<'info> {
     #[account(mut)]
@@ -33,7 +31,11 @@ impl<'info> SubmitContribution<'info> {
         work_units: u64,
         bumps: &SubmitContributionBumps,
     ) -> Result<()> {
+        if work_units == 0 || work_units > self.task_account.total_work_units {
+            return Err(error!(InvalidWorkUnits));
+        }
         self.contribution_account.set_inner(ContributionAccount{
+            contributor: self.contributor.key(),
             submission_uri,
             work_units,
             approved: false,

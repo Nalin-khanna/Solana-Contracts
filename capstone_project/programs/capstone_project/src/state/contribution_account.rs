@@ -3,6 +3,7 @@ use anchor_lang::prelude::*;
 #[account]
 #[derive(InitSpace)]
 pub struct ContributionAccount {
+    pub contributor: Pubkey,
     #[max_len(200)]
     pub submission_uri : String,
     pub work_units: u64,
