@@ -1,5 +1,4 @@
-pub mod initialize;
-
-pub use initialize::*;
 pub mod create_task;
 pub use create_task::*;
+pub mod submit_contribution;
+pub use submit_contribution::*;

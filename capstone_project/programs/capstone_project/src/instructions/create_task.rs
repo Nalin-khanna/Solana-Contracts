@@ -1,7 +1,7 @@
 use anchor_lang::prelude::*;
 use crate::{state::*};
-use anchor_lang::system_program::{transfer , create_account};
-use anchor_lang::system_program::{Transfer, CreateAccount};
+use anchor_lang::system_program::{transfer};
+use anchor_lang::system_program::{Transfer};
 
 #[derive(Accounts)]
 #[instruction(task_seed: u64)]
@@ -10,11 +10,9 @@ pub struct CreateTask<'info> {
     pub creator: Signer<'info>,
     
     #[account(
-        init,
-        payer = creator,
+        mut,
         seeds = [b"task", creator.key().as_ref(), task_seed.to_le_bytes().as_ref()],
         bump,
-        space = 8 + TaskAccount::INIT_SPACE
     )]
     pub task_account: Account<'info, TaskAccount>,
 
