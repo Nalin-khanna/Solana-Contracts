@@ -6,4 +6,10 @@ pub enum ErrorCode {
     CustomError,
     #[msg("Invalid number of work units")]
     InvalidWorkUnits,
+    #[msg("Reviewer is not active")]
+    ReviewerNotActive,
+    #[msg("No stake found")]
+    NoStake,
+    #[msg("Already voted on this contribution")]
+    AlreadyVoted,
 }

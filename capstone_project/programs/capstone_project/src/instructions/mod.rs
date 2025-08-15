@@ -4,3 +4,5 @@ pub mod submit_contribution;
 pub use submit_contribution::*;
 pub mod reviewer_init;
 pub use reviewer_init::*;
+pub mod submit_vote;
+pub use submit_vote::*;

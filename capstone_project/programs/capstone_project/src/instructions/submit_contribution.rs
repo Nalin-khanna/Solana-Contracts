@@ -22,6 +22,15 @@ pub struct SubmitContribution<'info> {
     )]
     pub contribution_account: Account<'info, ContributionAccount>,
 
+    #[account(
+        init ,
+        payer = contributor,
+        seeds = [b"vote", contribution_account.key().as_ref()],
+        bump,
+        space = 8 + VoteAccount::INIT_SPACE
+    )]
+    pub vote_account: Account<'info, VoteAccount>,
+
     pub system_program: Program<'info, System>,
 }
 impl<'info> SubmitContribution<'info> {
@@ -42,7 +51,12 @@ impl<'info> SubmitContribution<'info> {
             created_at: Clock::get()?.unix_timestamp,
             bump: bumps.contribution_account,
         });
-
+        self.vote_account.set_inner(VoteAccount {
+            total_votes: 0,
+            approve_votes: 0,
+            voters: vec![],
+            bump: bumps.vote_account,
+        });
         self.task_account.total_submissions += 1;
         self.task_account.updated_at = Clock::get()?.unix_timestamp;
 
