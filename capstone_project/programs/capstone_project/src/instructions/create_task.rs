@@ -23,7 +23,7 @@ pub struct CreateTask<'info> {
         seeds = [b"escrow", task_account.key().as_ref()],
         bump
     )]
-    pub escrow_vault: UncheckedAccount<'info>,
+    pub escrow_vault: SystemAccount<'info>,
 
     pub system_program: Program<'info, System>,
 }
@@ -42,26 +42,7 @@ impl <'info> CreateTask<'info> {
             task_seed: task_seed,
             task_bump : bumps.task_account,
             vault_bump: bumps.escrow_vault,
-        });
-
-        let rent_lamports = Rent::get()?.minimum_balance(0); // 0 data space
-        let cpi_accounts = CreateAccount {
-        from: self.creator.to_account_info(),
-        to: self.escrow_vault.to_account_info(),
-       };
-       let cpi_ctx = CpiContext::new(self.system_program.to_account_info(), cpi_accounts);
-
-    create_account(
-        cpi_ctx.with_signer(&[&[
-        b"escrow",
-        self.task_account.key().as_ref(),
-        &[bumps.escrow_vault],
-    ]]), 
-        rent_lamports,
-        0, // space
-        &crate::ID, // owner is our program
-    )?;
-
+        });       
         self.deposit_reward(reward_amount)?;
 
         Ok(())
